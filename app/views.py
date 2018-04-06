@@ -13,9 +13,8 @@ import json
 def index(request):
     if request.method == "POST":
         name = request.POST.get("name")
-        url_enter = request.POST.get("url_enter")
+        url_enter = request.POST.get("url_enter")    # enter url name
 
-        #url = 'https://github.com/Sasha-bill/DRF-TDD'
         page = requests.get(url_enter)
         tree = html.fromstring(page.content)
 
@@ -24,16 +23,16 @@ def index(request):
 
         c = Counter(all_tags)
 
-        print('all:', len(all_elms), 'span:', c['span'])
+       # print('all:', len(all_elms), 'span:', c['span'])  # if need all to count all tags
 
         d = {}
         for e in c:
             d[e] = c[e]
 
         j = json.dumps(d, sort_keys=True, indent=4)
-        print(j)
+      #  print(j)   # for terminal output
 
-        return HttpResponse("<h2>Hello, {0}, \n we counted your HTML code tags: {1}  </h2>".format(name, j))
+        return HttpResponse("<h2>Hello, {0} <p>We counted your HTML code tags:<p> {1} </p> </p></h2>".format(name, j))
     else:
         userform = UserForm()
         return render(request, "index.html", {"form": userform})
